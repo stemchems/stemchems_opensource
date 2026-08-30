@@ -1,0 +1,1223 @@
+<!--
+ ████ █████ █████ █   █  ███  █   █ █████ █   █  ████            █████  ███  ████   ████  ███   ███       ███    
+█ ░░░░ ░█░░░█░░░░░██ ██░█ ░░░ █░  █░█░░░░░██ ██░█ ░░░░            ░█░░░█ ░░█ █░░░█ █ ░░░░█ ░░█ █ ░░█     █ ░░█   
+ ███░░░ █░░░████░░█░█ █░█░ ░░░█████░████░░█░█ █░░███░░░  ████      █░░░█░ ░█░████░░ ███░░█░ ░█░█░ ░█░    █░ ░█░  
+  ░░█   █░░ █░░░░ █░░░█░█░░   █░░░█░█░░░░ █░░░█░░ ░░█     ░░░░     █░░ █░░ █░█░░█░ ░ ░░█ █░░ █░█░░ █░░█  █░░ █░░ 
+████░░  █░░ █████░█░░ █░░███  █░░░█░█████░█░░ █░████░░     ░░░░    █░░  ███ ░█░░░█░████░░ ███ ░░███ ░░█░  ███ ░░ 
+ ░░░░ ░  ░░  ░░░░░ ░░  ░░ ░░░  ░░  ░░░░░░░ ░░  ░░░░░░ ░             ░░   ░░░ ░░░  ░ ░░░░ ░ ░░░ ░ ░░░ ░ ░░  ░░░ ░ 
+  ░░░░    ░   ░░░░░ ░   ░  ░░░  ░   ░ ░░░░░ ░   ░ ░░░░               ░    ░░░  ░   ░ ░░░░   ░░░   ░░░   ░   ░░░   
+
+  STEMCHEMS WILL ALWAYS BE AN OPEN-SOURCE WEBSITE. 
+
+  You are free to inspect, and download the source code at anytime. 
+  We believe in transparency, which is why we have nothing to hide.
+
+  Your privacy matters to us. STEMCHEMS does not collect or sell 
+  your personal information. You can inspect the code yourself 
+  and see exactly how the website works. :)
+
+  THIS WEBSITE DOES NOT MONETIZE OR CONTAIN ANY FORM OF ADVERTISEMENT.
+  IN CASE OF A DDoS ATTACK OR ANY OTHER WEBSITE-RELATED ISSUE, 
+  PLEASE INFORM @stemchems OR @torsoo.o ON INSTAGRAM.
+
+  Thank you for supporting STEMCHEMS. 
+  ~ Sean Agbayani from STEM - 122
+
+  © 2026 STEMCHEMS. All Rights Reserved.
+  Unauthorized copying, reproduction, modification, or redistribution is prohibited.
+-->
+
+<!--
+  To achieve Easter Egg Tab, add this script below line 258:
+
+      <button type="button" class="mode-tab mode-tab-egg" data-mode="egg" title="Easter egg" aria-label="Easter egg">🥚</button>
+
+  👀
+-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>stemchems</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="custom-bg" id="customBg"></div>
+<div class="ambient" id="chalkDust"></div>
+
+<div class="modal-overlay" id="privacyOverlay">
+  <div class="modal">
+    <div class="modal-tag">🔒 Privacy Notice</div>
+    <h2>The Data Privacy Act of 2012</h2>
+    <p><b>This page does not collect, log, store, or transmit any of your answers, scores, or personal information.</b> Everything you type stays in your browser only and disappears when you close or refresh the page.</p>
+    <p class="modal-source">Source: LPU-C Student Privacy Notice — <a href="https://cavite.lpu.edu.ph/about-us/privacy-policy/students-privacy-notice/" target="_blank" rel="noopener">cavite.lpu.edu.ph</a></p>
+    <div class="modal-actions">
+      <button type="button" class="primary" id="privacyCloseBtn">I Understand, Continue</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="changelogOverlay">
+  <div class="modal">
+    <div class="modal-tag">🆕 What's New</div>
+    <h2>Change Log</h2>
+
+    <div class="creator-card">
+      <div class="creator-avatar"><img src="data:image/jpeg;base64,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" alt="torsoo.o"></div>
+      <div class="creator-info">
+        <div class="creator-name"><a href="https://www.instagram.com/torsoo.o/" target="_blank" rel="noopener">@torsoo.o</a></div>
+        <div class="creator-role">Site Creator</div>
+        <div class="creator-bio">𝘚𝘰𝘮𝘯𝘪𝘢 𝘛𝘶𝘢 𝘗𝘦𝘳𝘴𝘦𝘲𝘶𝘦𝘳𝘦.</div>
+        <div class="creator-status" id="creatorStatus">
+          <span class="status-dot"></span>
+          <span class="status-text" id="statusText">—</span>
+          <span class="status-lastactive" id="statusLastActive"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="creator-card">
+      <div class="creator-avatar"><img src="data:image/jpeg;base64,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" alt="stemchems" loading="lazy"></div>
+      <div class="creator-info">
+        <div class="creator-name"><a href="https://www.instagram.com/stemchems/" target="_blank" rel="noopener">@stemchems</a></div>
+        <div class="creator-role">Follow the page</div>
+      </div>
+    </div>
+
+    <div class="changelog-scroll">
+
+    <div class="changelog-group">
+      <div class="changelog-date">August 29, 2026</div>
+        <ul class="changelog-list">
+          <li><b>Announcement System</b> — added a new announcement popup to let users know about the latest announcement from our chemistry professor (Ms. Manikan)</li>
+          <li><b>Recitation Practice Tab</b> — mimics the 5 Minute recitation, 30 Ions.</li>
+      </ul>
+    </div>
+
+    <div class="changelog-group">
+      <div class="changelog-date">August 28, 2026</div>
+        <ul class="changelog-list">
+          <li><b>Answerable Ions Changes</b> — added a new textbox for stock and classical.</li>
+      </ul>
+    </div>
+
+    <div class="changelog-group">
+      <div class="changelog-date">August 26, 2026</div>
+        <ul class="changelog-list">
+          <li><b>Answerable Ions</b> — a new answerable tab covering all 50 ions from the multivalent metals, monatomic ions, and polyatomic ions.</li>
+          <li><b>Fixed some issues with parenthesis</b> — elements with parenthesis are now fixed.</li>
+          <li><b><i>MAG MEMORIZE NA PARA SA RECITATION! GALINGAN NIYOOOOOOOOOOOOOOOOOOOOOOO</i> </b> — Sean</li>
+      </ul>
+    </div>
+
+    <div class="changelog-group">
+      <div class="changelog-date">August 19, 2026</div>
+        <ul class="changelog-list">
+          <li><b>Memorize Ions mode added</b> — a new flashcard tab covering all 50 ions from the multivalent metals, monatomic ions, and polyatomic ions reference tables.</li>
+          <li><b>Periodic table tooltip clipping fixed</b> — tooltips near the edges of the table (like Li and Na) were getting cut off mid-word instead of shifting to stay fully visible.</li>
+      </ul>
+    </div>
+
+    <div class="changelog-group">
+      <div class="changelog-date">August 11, 2026</div>
+        <ul class="changelog-list">
+          <li><b>🥚</b> — Easter Egg'ed.</li>
+        </ul>
+      </div>
+
+    <div class="changelog-group">
+      <div class="changelog-date">August 9, 2026</div>
+        <ul class="changelog-list">
+          <li><b>New UI update</b> — 3 Formula Count answers were corrected after being marked wrong when they shouldn't have been: Ca(OH)<sub>2</sub> was counted as 2 elements instead of 3, (NH<sub>4</sub>)<sub>2</sub>S was counted as 9 atoms instead of 11, and NaHSO<sub>4</sub> was counted as 6 atoms instead of 7.</li>
+          <li><b>Formula Count answers corrected</b> — 3 formulas had wrong stored answers, marking correct guesses wrong: Ca(OH)<sub>2</sub> was counted as 2 elements instead of 3, (NH<sub>4</sub>)<sub>2</sub>S was counted as 9 atoms instead of 11, and NaHSO<sub>4</sub> was counted as 6 atoms instead of 7.</li>
+        </ul>
+      </div>
+
+    <div class="changelog-group">
+      <div class="changelog-date">August 7, 2026</div>
+        <ul class="changelog-list">
+          <li><b>Bigger question pools</b> — every quiz mode got a refill: Formula Count (48 → 97 compounds), Isotope Notation (48 → 93 isotopes), Oxidation States &amp; Polyatomic Ions (22 → 50 ions), Ion Classification &amp; Naming (18 → 38 ions), Isotope Notation Practice (13 → 22 ions), and Worked Ion Examples (6 → 13 worked cases). </li>
+        </ul>
+    </div>
+
+    <div class="changelog-group">
+      <div class="changelog-date">August 5, 2026</div>
+        <ul class="changelog-list">
+          <li><b>UI redesign</b> — refreshed layout and styling tuned for both mobile and desktop: a scrollable pill tab bar for the now-7 quiz modes, new ion-tile displays, and general polish.</li>
+          <li><b>Paper &amp; Mist themes removed</b> — the theme picker is now just Slate (default) and LPU.</li>
+          <li><b>4 new solving modes added</b> — the old static lesson notes are now real practice quizzes: <b>Oxidation States &amp; Polyatomic Ions</b>, <b>Ion Classification &amp; Naming</b>, <b>Isotope Notation Practice</b> (ions), and <b>Worked Ion Examples</b>. Each keeps its matching lesson card as reference underneath.</li>
+          <li><b>@stemchems on Instagram</b> — a follow card was added next to the site creator's card above.</li>
+        </ul>
+    </div>
+
+    <div class="changelog-group">
+      <div class="changelog-date">August 2, 2026</div>
+        <ul class="changelog-list">
+          <li><b>Isotope Notation mode added</b> — a third quiz tab: given an isotope's mass number and symbol, work out the atomic number, protons, electrons, and neutrons.</li>
+          <li><b>48 practice isotopes</b> — from H-1 up through U-238.</li>
+          <li><b>Own scoreboard</b> — Isotope Notation tracks its own correct-fields count and streak.</li>
+          <li><b>Calculator added</b> — a new Calculator card under Quick tips on desktop; on mobile it's a floating button you can toggle open or closed.</li>
+          <li><b>Per-mode sidebar cleanup</b> — Category key, Quick tips, and the Family Name List now only show on Element ID, since they don't apply to Formula Count or Isotope Notation.</li>
+          <li><b>Calculator & periodic table stay relevant</b> — hidden on Formula Count (not needed there), but kept for Isotope Notation since you'll want them to look up atomic numbers and check your math.</li>
+      </ul>
+  </div>
+
+    <div class="changelog-group">
+      <div class="changelog-date">July 26, 2026</div>
+        <ul class="changelog-list">
+          <li><b>Full visual redesign</b> — moved from the chalkboard look to a cleaner instrument-panel dashboard, with a wider layout on desktop.</li>
+          <li><b>21 practice formulas</b> — Added new chemicals.</li>
+          <li><b>Changelog scroll</b> — Fixed being static on (July 23, 2026).</li>
+          <li><b>Full visual redesign</b> — moved from the chalkboard look to a cleaner instrument-panel dashboard, with graph-paper texture, new typography, and a cobalt accent color.</li>
+          <li><b>Dashboard layout on desktop</b> — the quiz card now sits next to a sidebar with a category key and quick tips; collapses to a single column on mobile.</li>
+          <li><b>Redesigned element/formula tile</b> — now a spec-sheet style readout card with a color-coded edge for metal, nonmetal, or metalloid.</li>
+          <li><b>Themes renamed, not removed</b> — Light/Green/Dark/LPU are now Paper/Mist/Slate/LPU with reskinned palettes; saved theme picks still carry over.</li>
+          <li><b>"What's new" link added</b> — reopen the changelog anytime from the footer instead of only seeing it once per page load.</li>
+      </ul>
+  </div>
+
+    <div class="changelog-group">
+      <div class="changelog-date">July 23, 2026</div>
+        <ul class="changelog-list">
+          <li><b>Formula Count mode added</b> — a new quiz tab that tests counting elements and atoms in a chemical formula, parentheses included.</li>
+          <li><b>Mode tabs</b> — switch between Element ID and Formula Count with the new pill tabs under the title.</li>
+          <li><b>48 practice formulas</b> — from simple ones like H₂O and NaCl up to trickier parentheses cases like Al₂(SO₄)₃ and (NH₄)₂CO₃.</li>
+          <li><b>Separate scoreboard</b> — Formula Count tracks its own correct-fields count and streak, independent from Element ID.</li>
+      </ul>
+  </div>
+      <div class="changelog-group">
+        <div class="changelog-date">July 18, 2026</div>
+        <ul class="changelog-list">
+          <li><b>Visual overhaul</b> — new chalkboard grain texture, shimmering title, and an animated color-ring glow behind the element tile.</li>
+          <li><b>Floating chalk dust</b> — subtle ambient particles now drift across the whole page.</li>
+          <li><b>Tile reveal animation</b> — each new element now pops in with a little bounce instead of just appearing.</li>
+          <li><b>Confetti on a perfect round</b> — score 6/6 and the page celebrates with a confetti burst and a glowing feedback panel.</li>
+          <li><b>Scoreboard redesign</b> — correct-fields and streak counters are now pill badges instead of plain text.</li>
+          <li><b>Polish pass</b> — buttons, form panel, periodic table cells, and family-list items all got subtle depth, shadows, and hover effects.</li>
+     </ul>
+    </div>
+      <div class="changelog-group">
+        <div class="changelog-date">July 17, 2026</div>
+        <ul class="changelog-list">
+          <li><b>Mobile alignment fixed</b> — the Lanthanide/Actinide rows now scale and line up with the main periodic table at any screen width.</li>
+          <li><b>Family list redesign</b> — a clean single-column list on mobile, a two-column reference grid on desktop.</li>
+          <li><b>Astatine corrected</b> — reclassified from Metalloid to Nonmetal.</li>
+          <li><b>Transition Metals added</b> — was missing from the Family Name List reference.</li>
+          <li><b>Transition and Hydrogen</b> — Fixed the issue of Transition and Hydrogen family not showing up.</li>
+          <li><b>Theme picker added</b> — choose Light, Green, or Dark below. Your pick is remembered.</li>
+          <li><b>Creator credit added</b> — site creator info, avatar, and IG link now shown at the top of this panel.</li>
+          <li><b>Online/offline status added</b> — shows next to the creator's name (manually updated).</li>
+          <li><b>LPU theme added</b> — a new Lyceum-inspired Red/Gray/Gold option in the theme picker below.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="theme-picker">
+      <div class="theme-picker-label">Theme</div>
+      <div class="theme-options" id="themeOptions">
+        <button type="button" class="theme-btn" data-theme-choice="dark">Default</button>
+        <button type="button" class="theme-btn" data-theme-choice="lpu">LPU</button>
+        <button type="button" class="theme-btn" data-theme-choice="custom" id="customThemeBtn">Custom</button>
+      </div>
+      <div class="custom-theme-upload" id="customThemeUpload">
+        <input type="file" accept="image/*" id="customBgInput" hidden>
+        <button type="button" class="link-btn" id="customBgUploadBtn">Upload a background image</button>
+        <span class="custom-theme-sep">·</span>
+        <button type="button" class="link-btn" id="customBgClearBtn">Remove</button>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button type="button" class="primary" id="changelogCloseBtn">Got it</button>
+    </div>
+  </div>
+</div>
+
+<div class="shell">
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">⚛</span>
+      <div class="brand-text">
+        <span class="brand-name">stemchems</span>
+      </div>
+    </div>
+    <a class="follow-link" href="https://www.instagram.com/torsoo.o/" target="_blank" rel="noopener">Support us — follow @torsoo.o</a>
+  </header>
+
+  <div class="mode-tabs" id="modeTabs">
+    <button type="button" class="mode-tab active" data-mode="element">Element ID</button>
+    <button type="button" class="mode-tab" data-mode="formula">Formula Count</button>
+    <button type="button" class="mode-tab" data-mode="isotope">Isotope Notation</button>
+    <button type="button" class="mode-tab" data-mode="oxidation">Oxidation &amp; Polyatomic Ions</button>
+    <button type="button" class="mode-tab" data-mode="ionclass">Ion Classification &amp; Naming</button>
+    <button type="button" class="mode-tab" data-mode="isopractice">Isotope Notation Practice</button>
+    <button type="button" class="mode-tab" data-mode="workedion">Ions/Ionic Practice</button>
+    <button type="button" class="mode-tab" data-mode="recitation">Recitation Practice</button>
+    <button type="button" class="mode-tab" data-mode="memorize">Memorize Ions</button>
+    <button type="button" class="mode-tab" data-mode="memquiz">Memorize Answer Quiz</button>
+  </div>
+
+  <div class="schedule-card" id="scheduleCard">
+    <div class="schedule-head">
+      <div class="schedule-head-text">
+        <span class="schedule-tag">📌 Announcement</span>
+      </div>
+      <button type="button" class="schedule-dismiss" id="scheduleDismiss" aria-label="Dismiss schedule">✕</button>
+    </div>
+
+    <div class="schedule-body">
+
+      <div class="schedule-block">
+        <div class="schedule-block-title">Summative Test 2</div>
+        <div class="schedule-coverage-label">Coverage:</div>
+        <ol class="schedule-coverage">
+          <li>Atoms (Subatomic Particles)</li>
+          <li>Isotopes</li>
+          <li>Ions</li>
+          <li>Naming compounds</li>
+          <li>Chemical Formula writing</li>
+        </ol>
+        <div class="schedule-note">NOTE: Please bring the laminated periodic table</div>
+      </div>
+
+      <div class="schedule-block">
+        <div class="schedule-block-title">Ions Recitation Notes</div>
+        <ul class="schedule-rules">
+          <li><b>Come prepared.</b> All students are expected to come to class fully prepared and to have memorized the required ions before the recitation.</li>
+          <li><b>Recitation proper.</b> Each student will be given 5 minutes to answer 30 randomly selected ions, chosen from the list provided for memorization.</li>
+          <li><b>Three batches.</b> The class is divided into three batches. While one batch recites, the other two work on an assigned activity, rotating until every batch has taken its turn.</li>
+          <li><b>No retake policy.</b> There will be no retake for this recitation — students have been given a month to study, so use the prep time wisely.</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="layout">
+    <div class="col-main">
+
+      <div id="panelElement">
+        <div class="quiz-card">
+
+          <div class="scoreboard">
+            <div class="stat-tile">
+              <span class="stat-label">Correct fields</span>
+              <span class="stat-value"><b id="totalRight">0</b>/<span id="totalSeen">0</span></span>
+            </div>
+            <div class="stat-tile streak">
+              <span class="stat-label">Streak</span>
+              <span class="stat-value"><b id="streak">0</b> 🎉</span>
+            </div>
+          </div>
+
+          <div class="tile-stage">
+            <div class="tile" id="tile">
+              <svg class="border" id="tileBorder"><rect x="2" y="2" width="calc(100% - 4px)" height="calc(100% - 4px)" rx="14"></rect></svg>
+              <div class="num" id="tileNum">—</div>
+              <div class="sym" id="tileSym">?</div>
+              <div class="name" id="tileName">Loading…</div>
+            </div>
+          </div>
+
+          <div class="prompt">Element: <b id="promptName">—</b></div>
+
+          <form id="quizForm" autocomplete="off">
+            <div class="row" data-field="period">
+              <label for="f-period">Period</label>
+              <input id="f-period" type="text" placeholder="__________">
+              <span class="mark"></span>
+            </div>
+            <div class="row" data-field="group">
+              <label for="f-group">Group</label>
+              <input id="f-group" type="text" placeholder="__________">
+              <span class="mark"></span>
+            </div>
+            <div class="row" data-field="classification">
+              <label for="f-classification">Classification</label>
+              <input id="f-classification" type="text" placeholder="__________">
+              <span class="mark"></span>
+            </div>
+            <div class="row" data-field="kind">
+              <label for="f-kind">Kind</label>
+              <input id="f-kind" type="text" placeholder="__________">
+              <span class="mark"></span>
+            </div>
+            <div class="row" data-field="family">
+              <label for="f-family">Family</label>
+              <input id="f-family" type="text" placeholder="__________">
+              <span class="mark"></span>
+            </div>
+            <div class="row" data-field="block">
+              <label for="f-block">Block</label>
+              <input id="f-block" type="text" placeholder="__________">
+              <span class="mark"></span>
+            </div>
+
+            <div class="actions">
+              <button type="button" class="ghost" id="nextBtn">Next element →</button>
+              <button type="submit" class="primary" id="checkBtn">Check answers</button>
+            </div>
+          </form>
+
+          <div class="feedback" id="feedback">
+            <div class="score-line">Score: <span class="n" id="roundScore">0/6</span> <span id="roundEmoji"></span></div>
+            <div class="note" id="feedbackNote"></div>
+          </div>
+
+          <footer>Classification = Representative / Transition &nbsp;·&nbsp; Kind = metal / nonmetal / metalloid</footer>
+
+        </div>
+      </div>
+
+      <div id="panelFormula" style="display:none">
+        <div class="quiz-card">
+
+          <div class="scoreboard">
+            <div class="stat-tile">
+              <span class="stat-label">Correct fields</span>
+              <span class="stat-value"><b id="fTotalRight">0</b>/<span id="fTotalSeen">0</span></span>
+            </div>
+            <div class="stat-tile streak">
+              <span class="stat-label">Streak</span>
+              <span class="stat-value"><b id="fStreak">0</b> 🎉</span>
+            </div>
+          </div>
+
+          <div class="tile-stage">
+            <div class="formula-tile" id="formulaTile">
+              <div class="formula-display" id="formulaDisplay">—</div>
+            </div>
+          </div>
+
+          <div class="prompt">Count the <b>elements</b> and <b>atoms</b> in the formula above.</div>
+
+          <form id="formulaForm" autocomplete="off">
+            <div class="row" data-field="elements">
+              <label for="f-elements"># of elements</label>
+              <input id="f-elements" type="text" inputmode="numeric" placeholder="__________">
+              <span class="mark"></span>
+            </div>
+            <div class="row" data-field="atoms">
+              <label for="f-atoms"># of atoms</label>
+              <input id="f-atoms" type="text" inputmode="numeric" placeholder="__________">
+              <span class="mark"></span>
+            </div>
+
+            <div class="actions">
+              <button type="button" class="ghost" id="fNextBtn">Next formula →</button>
+              <button type="submit" class="primary" id="fCheckBtn">Check answers</button>
+            </div>
+          </form>
+
+          <div class="feedback" id="fFeedback">
+            <div class="score-line">Score: <span class="n" id="fRoundScore">0/2</span> <span id="fRoundEmoji"></span></div>
+            <div class="note" id="fFeedbackNote"></div>
+          </div>
+
+          <footer># of elements = different symbols &nbsp;·&nbsp; # of atoms = add every subscript (numbers right after a closing parenthesis multiply everything inside it)</footer>
+
+        </div>
+      </div>
+
+      <div id="panelIsotope" style="display:none">
+        <div class="quiz-card">
+
+          <div class="scoreboard">
+            <div class="stat-tile">
+              <span class="stat-label">Correct fields</span>
+              <span class="stat-value"><b id="iTotalRight">0</b>/<span id="iTotalSeen">0</span></span>
+            </div>
+            <div class="stat-tile streak">
+              <span class="stat-label">Streak</span>
+              <span class="stat-value"><b id="iStreak">0</b> 🎉</span>
+            </div>
+          </div>
+
+          <div class="tile-stage">
+            <div class="iso-tile" id="isoTile">
+              <div class="iso-notation">
+                <div class="iso-super-sub">
+                  <span class="iso-mass" id="isoMass">—</span>
+                  <span class="iso-atomic">?</span>
+                </div>
+                <span class="iso-symbol" id="isoSymbol">?</span>
+              </div>
+              <div class="iso-name" id="isoName">Loading…</div>
+            </div>
+          </div>
+
+          <div class="prompt">Use the mass number above (and the periodic table below) to work out this isotope's makeup.</div>
+
+          <form id="isotopeForm" autocomplete="off">
+            <div class="row" data-field="atomic">
+              <label for="i-atomic">Atomic number (Z)</label>
+              <input id="i-atomic" type="text" inputmode="numeric" placeholder="__________">
+              <span class="mark"></span>
+            </div>
+            <div class="row" data-field="protons">
+              <label for="i-protons">Protons (p⁺)</label>
+              <input id="i-protons" type="text" inputmode="numeric" placeholder="__________">
+              <span class="mark"></span>
+            </div>
+            <div class="row" data-field="electrons">
+              <label for="i-electrons">Electrons (e⁻)</label>
+              <input id="i-electrons" type="text" inputmode="numeric" placeholder="__________">
+              <span class="mark"></span>
+            </div>
+            <div class="row" data-field="neutrons">
+              <label for="i-neutrons">Neutrons (n⁰)</label>
+              <input id="i-neutrons" type="text" inputmode="numeric" placeholder="__________">
+              <span class="mark"></span>
+            </div>
+
+            <div class="actions">
+              <button type="button" class="ghost" id="iNextBtn">Next isotope →</button>
+              <button type="submit" class="primary" id="iCheckBtn">Check answers</button>
+            </div>
+          </form>
+
+          <div class="feedback" id="iFeedback">
+            <div class="score-line">Score: <span class="n" id="iRoundScore">0/4</span> <span id="iRoundEmoji"></span></div>
+            <div class="note" id="iFeedbackNote"></div>
+          </div>
+
+          <footer>Neutral atom: p⁺ = e⁻ = Z (atomic number) &nbsp;·&nbsp; n⁰ = A (mass number) − Z</footer>
+
+        </div>
+      </div>
+
+      <div id="panelOxidation" style="display:none">
+        <div class="quiz-card">
+
+          <div class="scoreboard">
+            <div class="stat-tile">
+              <span class="stat-label">Correct fields</span>
+              <span class="stat-value"><b id="oxTotalRight">0</b>/<span id="oxTotalSeen">0</span></span>
+            </div>
+            <div class="stat-tile streak">
+              <span class="stat-label">Streak</span>
+              <span class="stat-value"><b id="oxStreak">0</b> 🎉</span>
+            </div>
+          </div>
+
+          <div class="tile-stage">
+            <div class="ion-tile type-ox" id="oxTile">
+              <div class="ion-formula" id="oxFormula">—</div>
+              <div class="ion-sub">Polyatomic ion / multivalent oxidation state</div>
+            </div>
+          </div>
+
+          <div class="prompt">Give this ion's <b>charge</b> and its <b>name</b>.</div>
+
+          <form id="oxidationForm" autocomplete="off">
+            <div class="row" data-field="charge">
+              <label for="ox-charge">Charge (e.g. +1, -2)</label>
+              <input id="ox-charge" type="text" placeholder="__________">
+              <span class="mark"></span>
+            </div>
+            <div class="row" data-field="name">
+              <label for="ox-name">Name</label>
+              <input id="ox-name" type="text" placeholder="__________">
+              <span class="mark"></span>
+            </div>
+
+            <div class="actions">
+              <button type="button" class="ghost" id="oxNextBtn">Next ion →</button>
+              <button type="submit" class="primary" id="oxCheckBtn">Check answers</button>
+            </div>
+          </form>
+
+          <div class="feedback" id="oxFeedback">
+            <div class="score-line">Score: <span class="n" id="oxRoundScore">0/2</span> <span id="oxRoundEmoji"></span></div>
+            <div class="note" id="oxFeedbackNote"></div>
+          </div>
+
+          <footer>Halogen oxyanions follow hypo-ite → ite → ate → per-ate &nbsp;·&nbsp; multivalent metals use -ous (lower) / -ic (higher)</footer>
+
+          <div class="lesson-notes">
+            <div class="lesson-grid">
+              <details class="lesson-card">
+                <summary><span><span class="lesson-num">01</span>Oxidation States &amp; Polyatomic Ions</span></summary>
+                <div class="lesson-body">
+                  <h4>Multivalent elements</h4>
+                  <ul>
+                    <li><b>Au⁺</b> → Gold(I) / Aurous</li>
+                    <li><b>Au³⁺</b> → Gold(III) / Auric</li>
+                  </ul>
+                  <h4>Halogen oxyanion pattern (Cl, Br, I)</h4>
+                  <table>
+                    <tr><th>Ion</th><th>Name</th></tr>
+                    <tr><td>ClO⁻</td><td>hypochlorite</td></tr>
+                    <tr><td>ClO₂⁻</td><td>chlorite</td></tr>
+                    <tr><td>ClO₃⁻</td><td>chlorate</td></tr>
+                    <tr><td>ClO₄⁻</td><td>perchlorate</td></tr>
+                  </table>
+                  <ul>
+                    <li>Same pattern for Br: BrO⁻, BrO₂⁻, BrO₃⁻, BrO₄⁻ — <b>hypo-ite → ite → ate → per-ate</b></li>
+                  </ul>
+                  <h4>Common polyatomic ions</h4>
+                  <table>
+                    <tr><th>Ion</th><th>Name</th><th>Ion</th><th>Name</th></tr>
+                    <tr><td>NH₄⁺</td><td>ammonium</td><td>N³⁻</td><td>nitride</td></tr>
+                    <tr><td>NO₂⁻</td><td>nitrite</td><td>S²⁻</td><td>sulfide</td></tr>
+                    <tr><td>NO₃⁻</td><td>nitrate</td><td>P³⁻</td><td>phosphide</td></tr>
+                    <tr><td>SO₃²⁻</td><td>sulfite</td><td>CO₃²⁻</td><td>carbonate</td></tr>
+                    <tr><td>SO₄²⁻</td><td>sulfate</td><td>CrO₄²⁻</td><td>chromate</td></tr>
+                    <tr><td>PO₃³⁻</td><td>phosphite</td><td>Cr₂O₇²⁻</td><td>dichromate</td></tr>
+                    <tr><td>PO₄³⁻</td><td>phosphate</td><td></td><td></td></tr>
+                  </table>
+                </div>
+              </details>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div id="panelIonClass" style="display:none">
+        <div class="quiz-card">
+
+          <div class="scoreboard">
+            <div class="stat-tile">
+              <span class="stat-label">Correct fields</span>
+              <span class="stat-value"><b id="clTotalRight">0</b>/<span id="clTotalSeen">0</span></span>
+            </div>
+            <div class="stat-tile streak">
+              <span class="stat-label">Streak</span>
+              <span class="stat-value"><b id="clStreak">0</b> 🎉</span>
+            </div>
+          </div>
+
+          <div class="tile-stage">
+            <div class="ion-tile type-cl" id="clTile">
+              <div class="ion-formula" id="clFormula">—</div>
+              <div class="ion-sub">Classify and name this ion</div>
+            </div>
+          </div>
+
+          <div class="prompt">Classify this ion's <b>type</b>, <b>charge type</b>, and give its <b>name</b>.</div>
+
+          <form id="ionclassForm" autocomplete="off">
+            <div class="row" data-field="type">
+              <label for="cl-type">Type (monatomic / polyatomic)</label>
+              <input id="cl-type" type="text" placeholder="__________">
+              <span class="mark"></span>
+            </div>
+            <div class="row" data-field="chargetype">
+              <label for="cl-chargetype">Cation or anion</label>
+              <input id="cl-chargetype" type="text" placeholder="__________">
+              <span class="mark"></span>
+            </div>
+            <div class="row" data-field="name">
+              <label for="cl-name">Name (stock or classical)</label>
+              <input id="cl-name" type="text" placeholder="__________">
+              <span class="mark"></span>
+            </div>
+
+            <div class="actions">
+              <button type="button" class="ghost" id="clNextBtn">Next ion →</button>
+              <button type="submit" class="primary" id="clCheckBtn">Check answers</button>
+            </div>
+          </form>
+
+          <div class="feedback" id="clFeedback">
+            <div class="score-line">Score: <span class="n" id="clRoundScore">0/3</span> <span id="clRoundEmoji"></span></div>
+            <div class="note" id="clFeedbackNote"></div>
+          </div>
+
+          <footer>Monatomic = 1 atom &nbsp;·&nbsp; Polyatomic = 2+ atoms bonded &nbsp;·&nbsp; Cation (+) loses e⁻ &nbsp;·&nbsp; Anion (–) gains e⁻</footer>
+
+          <div class="lesson-notes">
+            <div class="lesson-grid">
+              <details class="lesson-card">
+                <summary><span><span class="lesson-num">02</span>Ion Classification &amp; Naming</span></summary>
+                <div class="lesson-body">
+                  <h4>Monatomic anions</h4>
+                  <ul>
+                    <li>Add suffix <b>-ide</b>: Oxygen → oxide (O²⁻), Chlorine → chloride (Cl⁻)</li>
+                  </ul>
+                  <h4>Ion types</h4>
+                  <ul>
+                    <li><b>Monatomic</b> = 1 atom &nbsp;·&nbsp; <b>Polyatomic</b> = 2 or more atoms bonded together</li>
+                    <li><b>Cation</b> (+) e.g. Li⁺, Ca²⁺, Mg²⁺ &nbsp;·&nbsp; <b>Anion</b> (–)</li>
+                  </ul>
+                  <h4>Naming multivalent metals</h4>
+                  <ul>
+                    <li><b>Stock system</b> → English element name + Roman numeral, e.g. Iron(II)</li>
+                    <li><b>Classical system</b> → old Latin-root name: <b>-ous</b> (lower charge) / <b>-ic</b> (higher charge)</li>
+                  </ul>
+                  <table>
+                    <tr><th>Ion</th><th>Stock name</th><th>Classical name</th></tr>
+                    <tr><td>As³⁺</td><td>Arsenic(III)</td><td>Arsenous</td></tr>
+                    <tr><td>As⁵⁺</td><td>Arsenic(V)</td><td>Arsenic</td></tr>
+                    <tr><td>Fe²⁺</td><td>Iron(II)</td><td>Ferrous</td></tr>
+                    <tr><td>Fe³⁺</td><td>Iron(III)</td><td>Ferric</td></tr>
+                  </table>
+                </div>
+              </details>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div id="panelIsoPractice" style="display:none">
+        <div class="quiz-card">
+
+          <div class="scoreboard">
+            <div class="stat-tile">
+              <span class="stat-label">Correct fields</span>
+              <span class="stat-value"><b id="ipTotalRight">0</b>/<span id="ipTotalSeen">0</span></span>
+            </div>
+            <div class="stat-tile streak">
+              <span class="stat-label">Streak</span>
+              <span class="stat-value"><b id="ipStreak">0</b> 🎉</span>
+            </div>
+          </div>
+
+          <div class="tile-stage">
+            <div class="ion-tile type-ip" id="ipTile">
+              <div class="ion-formula" id="ipFormula">—</div>
+              <div class="ion-sub" id="ipName">Loading…</div>
+            </div>
+          </div>
+
+          <div class="prompt">This time the atom is shown as an <b>ion</b> — work out its full makeup.</div>
+
+          <form id="isopracticeForm" autocomplete="off">
+            <div class="row" data-field="atomic">
+              <label for="ip-atomic">Atomic number (Z)</label>
+              <input id="ip-atomic" type="text" inputmode="numeric" placeholder="__________">
+              <span class="mark"></span>
+            </div>
+            <div class="row" data-field="protons">
+              <label for="ip-protons">Protons (p⁺)</label>
+              <input id="ip-protons" type="text" inputmode="numeric" placeholder="__________">
+              <span class="mark"></span>
+            </div>
+            <div class="row" data-field="electrons">
+              <label for="ip-electrons">Electrons (e⁻)</label>
+              <input id="ip-electrons" type="text" inputmode="numeric" placeholder="__________">
+              <span class="mark"></span>
+            </div>
+            <div class="row" data-field="neutrons">
+              <label for="ip-neutrons">Neutrons (n⁰)</label>
+              <input id="ip-neutrons" type="text" inputmode="numeric" placeholder="__________">
+              <span class="mark"></span>
+            </div>
+            <div class="row" data-field="valence">
+              <label for="ip-valence">Valence e⁻</label>
+              <input id="ip-valence" type="text" inputmode="numeric" placeholder="__________">
+              <span class="mark"></span>
+            </div>
+
+            <div class="actions">
+              <button type="button" class="ghost" id="ipNextBtn">Next ion →</button>
+              <button type="submit" class="primary" id="ipCheckBtn">Check answers</button>
+            </div>
+          </form>
+
+          <div class="feedback" id="ipFeedback">
+            <div class="score-line">Score: <span class="n" id="ipRoundScore">0/5</span> <span id="ipRoundEmoji"></span></div>
+            <div class="note" id="ipFeedbackNote"></div>
+          </div>
+
+          <footer>e⁻ = Z − charge &nbsp;·&nbsp; n⁰ = A − Z &nbsp;·&nbsp; Valence e⁻ = main-group number's last digit</footer>
+
+          <div class="lesson-notes">
+            <div class="lesson-grid">
+              <details class="lesson-card">
+                <summary><span><span class="lesson-num">03</span>Isotope Notation Practice</span></summary>
+                <div class="lesson-body">
+                  <h4>Method for a neutral atom</h4>
+                  <ul>
+                    <li><b>p⁺</b> = atomic number (Z, bottom-left of the notation)</li>
+                    <li><b>e⁻</b> = p⁺ (neutral) — adjust by the ion's charge if it's an ion</li>
+                    <li><b>n⁰</b> = mass number (A, top-left) − atomic number (Z)</li>
+                    <li><b>Valence e⁻</b> = main-group number's last digit (e.g. Group 17 → 7 v.e.)</li>
+                  </ul>
+                  <h4>Worked examples</h4>
+                  <table>
+                    <tr><th>Atom → Ion</th><th>p⁺</th><th>e⁻</th><th>n⁰</th><th>v.e.</th></tr>
+                    <tr><td>¹⁹F → F⁻</td><td>9</td><td>10</td><td>10</td><td>8</td></tr>
+                    <tr><td>¹⁶O → O²⁻</td><td>8</td><td>10</td><td>8</td><td>8</td></tr>
+                    <tr><td>N → N³⁻</td><td>7</td><td>10</td><td>—</td><td>5</td></tr>
+                    <tr><td>Cl → Cl⁻</td><td>17</td><td>18</td><td>—</td><td>7</td></tr>
+                    <tr><td>S → S²⁻</td><td>16</td><td>18</td><td>—</td><td>6</td></tr>
+                    <tr><td>P → P³⁻</td><td>15</td><td>18</td><td>—</td><td>5</td></tr>
+                  </table>
+                </div>
+              </details>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div id="panelWorkedIon" style="display:none">
+        <div class="quiz-card">
+
+          <div class="scoreboard">
+            <div class="stat-tile">
+              <span class="stat-label">Correct fields</span>
+              <span class="stat-value"><b id="wiTotalRight">0</b>/<span id="wiTotalSeen">0</span></span>
+            </div>
+            <div class="stat-tile streak">
+              <span class="stat-label">Streak</span>
+              <span class="stat-value"><b id="wiStreak">0</b> 🎉</span>
+            </div>
+          </div>
+
+          <div class="tile-stage">
+            <div class="ion-tile type-wi" id="wiTile">
+              <div class="ion-formula" id="wiFormula">—</div>
+              <div class="ion-sub" id="wiName">Loading…</div>
+            </div>
+          </div>
+
+          <div class="prompt">Full breakdown time — these are the classic worked examples from the board.</div>
+
+          <form id="workedionForm" autocomplete="off">
+            <div class="row" data-field="atomic">
+              <label for="wi-atomic">Atomic number (Z)</label>
+              <input id="wi-atomic" type="text" inputmode="numeric" placeholder="__________">
+              <span class="mark"></span>
+            </div>
+            <div class="row" data-field="protons">
+              <label for="wi-protons">Protons (p⁺)</label>
+              <input id="wi-protons" type="text" inputmode="numeric" placeholder="__________">
+              <span class="mark"></span>
+            </div>
+            <div class="row" data-field="electrons">
+              <label for="wi-electrons">Electrons (e⁻)</label>
+              <input id="wi-electrons" type="text" inputmode="numeric" placeholder="__________">
+              <span class="mark"></span>
+            </div>
+            <div class="row" data-field="neutrons">
+              <label for="wi-neutrons">Neutrons (n⁰)</label>
+              <input id="wi-neutrons" type="text" inputmode="numeric" placeholder="__________">
+              <span class="mark"></span>
+            </div>
+            <div class="row" data-field="valence">
+              <label for="wi-valence">Valence e⁻ (charge magnitude)</label>
+              <input id="wi-valence" type="text" inputmode="numeric" placeholder="__________">
+              <span class="mark"></span>
+            </div>
+
+            <div class="actions">
+              <button type="button" class="ghost" id="wiNextBtn">Next example →</button>
+              <button type="submit" class="primary" id="wiCheckBtn">Check answers</button>
+            </div>
+          </form>
+
+          <div class="feedback" id="wiFeedback">
+            <div class="score-line">Score: <span class="n" id="wiRoundScore">0/5</span> <span id="wiRoundEmoji"></span></div>
+            <div class="note" id="wiFeedbackNote"></div>
+          </div>
+
+          <footer>Cation (+) → atom loses e⁻ → metals &nbsp;·&nbsp; Anion (–) → atom gains e⁻ → nonmetals</footer>
+
+          <div class="lesson-notes">
+            <div class="lesson-grid">
+              <details class="lesson-card">
+                <summary><span><span class="lesson-num">04</span>Worked Ion Examples</span></summary>
+                <div class="lesson-body">
+                  <h4>Cations vs anions</h4>
+                  <ul>
+                    <li><b>Cation</b> (+) → atom <b>loses</b> e⁻ → metals</li>
+                    <li><b>Anion</b> (–) → atom <b>gains</b> e⁻ → nonmetals</li>
+                  </ul>
+                  <h4>Full breakdowns</h4>
+                  <table>
+                    <tr><th>Atom → Ion</th><th>p⁺</th><th>e⁻</th><th>n⁰</th><th>v.e.</th></tr>
+                    <tr><td>⁹Be → Be²⁺</td><td>4</td><td>2</td><td>5</td><td>2</td></tr>
+                    <tr><td>¹⁹⁷Au → Au³⁺/Au⁺</td><td>79</td><td>76 / 78</td><td>118</td><td>3 / 1</td></tr>
+                    <tr><td>²⁴Mg → Mg²⁺</td><td>12</td><td>10</td><td>12</td><td>2</td></tr>
+                    <tr><td>Fe → Fe²⁺/Fe³⁺</td><td>26</td><td>24 / 23</td><td>30</td><td>2 / 3</td></tr>
+                  </table>
+                  <ul>
+                    <li>Mg (Z=12) electron shells: 2, 8, 2 — matches the Bohr diagram drawn on the board</li>
+                  </ul>
+                </div>
+              </details>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div id="panelRecitation" style="display:none">
+        <div class="quiz-card recitation-card">
+
+          <div class="recitation-start" id="recitationStart">
+            <div class="recitation-start-icon">⏱️</div>
+            <h3>Recitation Practice</h3>
+            <p><b>30 random ions</b> from all the multivalent metals, monatomic ions, and polyatomic ions, <b>5 minutes</b>, type the name for each one as fast as you can.</p>
+            <button type="button" class="primary" id="rcStartBtn">Start practice run</button>
+          </div>
+
+          <div class="recitation-live" id="recitationLive" style="display:none">
+
+            <div class="scoreboard recitation-scoreboard">
+              <div class="stat-tile">
+                <span class="stat-label">Correct</span>
+                <span class="stat-value"><b id="rcTotalRight">0</b>/<span id="rcTotalSeen">0</span></span>
+              </div>
+              <div class="stat-tile">
+                <span class="stat-label">Ion</span>
+                <span class="stat-value"><b id="rcIonNum">0</b>/<span id="rcIonTotal">30</span></span>
+              </div>
+              <div class="stat-tile timer" id="rcTimerTile">
+                <span class="stat-label">Time left</span>
+                <span class="stat-value"><b id="rcTimeLeft">5:00</b></span>
+              </div>
+            </div>
+
+            <div class="tile-stage">
+              <div class="ion-tile type-mq" id="rcTile">
+                <div class="ion-formula" id="rcFormula">—</div>
+                <div class="ion-sub" id="rcTag">Ion</div>
+              </div>
+            </div>
+
+            <div class="prompt">Type this ion's <b>name</b>. Multivalent metals ask for both the stock and classical name; other ions just need the one name.</div>
+
+            <form id="rcForm" autocomplete="off">
+              <div class="row" data-field="name">
+                <label for="rc-name" id="rcNameLabel">Name</label>
+                <input id="rc-name" type="text" placeholder="__________">
+                <span class="mark"></span>
+              </div>
+              <div class="row" data-field="name2" id="rcNameRow2" style="display:none">
+                <label for="rc-name2" id="rcNameLabel2">Classical</label>
+                <input id="rc-name2" type="text" placeholder="__________">
+                <span class="mark"></span>
+              </div>
+
+              <div class="actions">
+                <button type="button" class="ghost" id="rcStopBtn">End run</button>
+                <button type="submit" class="primary" id="rcCheckBtn">Check answer</button>
+              </div>
+            </form>
+
+            <div class="feedback" id="rcFeedback">
+              <div class="score-line">Score: <span class="n" id="rcRoundScore">0/1</span> <span id="rcRoundEmoji"></span></div>
+              <div class="note" id="rcFeedbackNote"></div>
+            </div>
+
+          </div>
+
+          <div class="recitation-end" id="recitationEnd" style="display:none">
+            <div class="recitation-end-icon" id="rcEndIcon">🎉</div>
+            <h3 id="rcEndTitle">Run complete</h3>
+            <div class="recitation-end-score" id="rcEndScore">0/30</div>
+            <p id="rcEndNote">—</p>
+            <button type="button" class="primary" id="rcRetryBtn">Try again</button>
+          </div>
+
+        </div>
+      </div>
+
+      <div id="panelMemorize" style="display:none">
+        <div class="quiz-card">
+
+          <div class="scoreboard">
+            <div class="stat-tile">
+              <span class="stat-label">Card</span>
+              <span class="stat-value"><b id="memIndexNum">1</b>/<span id="memTotalNum">50</span></span>
+            </div>
+            <div class="stat-tile streak">
+              <span class="stat-label">Known this set</span>
+              <span class="stat-value"><b id="memKnownNum">0</b> ✅</span>
+            </div>
+          </div>
+
+          <div class="mem-filters" id="memFilters">
+            <button type="button" class="mem-chip active" data-filter="all">All ions</button>
+            <button type="button" class="mem-chip" data-filter="metals">Multivalent Metals</button>
+            <button type="button" class="mem-chip" data-filter="monatomic">Monatomic Ions</button>
+            <button type="button" class="mem-chip" data-filter="poly">Polyatomic Ions</button>
+          </div>
+
+          <div class="tile-stage">
+            <div class="flashcard" id="memCard">
+              <div class="flashcard-inner" id="memCardInner">
+                <div class="flashcard-face flashcard-front">
+                  <div class="mem-tag" id="memTagFront">—</div>
+                  <div class="ion-formula" id="memFormula">—</div>
+                  <div class="mem-hint">Tap to reveal name</div>
+                </div>
+                <div class="flashcard-face flashcard-back">
+                  <div class="mem-tag" id="memTagBack">—</div>
+                  <div class="mem-name" id="memName">—</div>
+                  <div class="mem-hint">Tap to see the ion again</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="prompt">Tap the card to flip, then mark it before moving on.</div>
+
+          <div class="mem-controls">
+            <button type="button" class="ghost" id="memShuffleBtn">🔀 Shuffle</button>
+            <button type="button" class="ghost" id="memPrevBtn">← Prev</button>
+            <button type="button" class="primary" id="memFlipBtn">Flip card</button>
+            <button type="button" class="ghost" id="memNextBtn">Next →</button>
+          </div>
+
+          <div class="mem-mark-row">
+            <button type="button" class="mem-mark mem-mark-bad" id="memMissedBtn">Still learning</button>
+            <button type="button" class="mem-mark mem-mark-good" id="memKnownBtn">Got it ✓</button>
+          </div>
+
+          <label class="mem-toggle">
+            <input type="checkbox" id="memMissedOnlyToggle">
+            Only show cards I haven't marked "Got it" yet
+          </label>
+
+          <div class="actions">
+            <button type="button" class="ghost show" id="memResetBtn">Reset this session's progress</button>
+          </div>
+
+          <footer>-ous = lower charge, -ic = higher charge for multivalent metals</footer>
+
+          <div class="lesson-notes">
+            <div class="lesson-grid">
+              <details class="lesson-card">
+                <summary><span><span class="lesson-num">05</span>Full reference — Multivalent Metals</span></summary>
+                <div class="lesson-body">
+                  <table>
+                    <tr><th>Ion</th><th>Name</th></tr>
+                    <tr><td>As³⁺</td><td>Arsenic (III) / Arsenous</td></tr>
+                    <tr><td>As⁵⁺</td><td>Arsenic (V) / Arsenic</td></tr>
+                    <tr><td>Au⁺</td><td>Gold (I) / Aurous</td></tr>
+                    <tr><td>Au³⁺</td><td>Gold (III) / Auric</td></tr>
+                    <tr><td>Co²⁺</td><td>Cobalt (II) / Cobaltous</td></tr>
+                    <tr><td>Co³⁺</td><td>Cobalt (III) / Cobaltic</td></tr>
+                    <tr><td>Cu⁺</td><td>Copper (I) / Cuprous</td></tr>
+                    <tr><td>Cu²⁺</td><td>Copper (II) / Cupric</td></tr>
+                    <tr><td>Cr²⁺</td><td>Chromium (II) / Chromous</td></tr>
+                    <tr><td>Cr³⁺</td><td>Chromium (III) / Chromic</td></tr>
+                    <tr><td>Fe²⁺</td><td>Iron (II) / Ferrous</td></tr>
+                    <tr><td>Fe³⁺</td><td>Iron (III) / Ferric</td></tr>
+                    <tr><td>Ni²⁺</td><td>Nickel (II) / Nickelous</td></tr>
+                    <tr><td>Ni³⁺</td><td>Nickel (III) / Nickelic</td></tr>
+                    <tr><td>Pb²⁺</td><td>Lead (II) / Plumbous</td></tr>
+                    <tr><td>Pb⁴⁺</td><td>Lead (IV) / Plumbic</td></tr>
+                    <tr><td>Sb³⁺</td><td>Antimony (III) / Antimonious</td></tr>
+                    <tr><td>Sb⁴⁺</td><td>Antimony (IV) / Antimonic</td></tr>
+                    <tr><td>Sn²⁺</td><td>Tin (II) / Stannous</td></tr>
+                    <tr><td>Sn⁴⁺</td><td>Tin (IV) / Stannic</td></tr>
+                  </table>
+                </div>
+              </details>
+              <details class="lesson-card">
+                <summary><span><span class="lesson-num">06</span>Full reference — Monatomic Ions</span></summary>
+                <div class="lesson-body">
+                  <table>
+                    <tr><th>Ion</th><th>Name</th></tr>
+                    <tr><td>O²⁻</td><td>Oxide</td></tr>
+                    <tr><td>N³⁻</td><td>Nitride</td></tr>
+                    <tr><td>P³⁻</td><td>Phosphide</td></tr>
+                    <tr><td>Cl⁻</td><td>Chloride</td></tr>
+                    <tr><td>S²⁻</td><td>Sulfide</td></tr>
+                    <tr><td>F⁻</td><td>Fluoride</td></tr>
+                    <tr><td>I⁻</td><td>Iodide</td></tr>
+                    <tr><td>Br⁻</td><td>Bromide</td></tr>
+                  </table>
+                </div>
+              </details>
+              <details class="lesson-card">
+                <summary><span><span class="lesson-num">07</span>Full reference — Polyatomic Ions</span></summary>
+                <div class="lesson-body">
+                  <table>
+                    <tr><th>Ion</th><th>Name</th></tr>
+                    <tr><td>NH₄⁺</td><td>Ammonium</td></tr>
+                    <tr><td>H₃O⁺</td><td>Hydronium</td></tr>
+                    <tr><td>OH⁻</td><td>Hydroxide</td></tr>
+                    <tr><td>CN⁻</td><td>Cyanide</td></tr>
+                    <tr><td>NO₂⁻</td><td>Nitrite</td></tr>
+                    <tr><td>NO₃⁻</td><td>Nitrate</td></tr>
+                    <tr><td>HSO₃⁻</td><td>Bisulfite</td></tr>
+                    <tr><td>HSO₄⁻</td><td>Bisulfate</td></tr>
+                    <tr><td>MnO₄⁻</td><td>Permanganate</td></tr>
+                    <tr><td>S₂O₃²⁻</td><td>Thiosulfate</td></tr>
+                    <tr><td>CO₃²⁻</td><td>Carbonate</td></tr>
+                    <tr><td>CrO₄²⁻</td><td>Chromate</td></tr>
+                    <tr><td>Cr₂O₇²⁻</td><td>Dichromate</td></tr>
+                    <tr><td>C₂O₄²⁻</td><td>Oxalate</td></tr>
+                    <tr><td>PO₃³⁻</td><td>Phosphite</td></tr>
+                    <tr><td>PO₄³⁻</td><td>Phosphate</td></tr>
+                    <tr><td>SO₃²⁻</td><td>Sulfite</td></tr>
+                    <tr><td>SO₄²⁻</td><td>Sulfate</td></tr>
+                    <tr><td>ClO⁻</td><td>Hypochlorite</td></tr>
+                    <tr><td>ClO₂⁻</td><td>Chlorite</td></tr>
+                    <tr><td>ClO₃⁻</td><td>Chlorate</td></tr>
+                    <tr><td>ClO₄⁻</td><td>Perchlorate</td></tr>
+                  </table>
+                </div>
+              </details>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div id="panelMemQuiz" style="display:none">
+        <div class="quiz-card">
+
+          <div class="scoreboard">
+            <div class="stat-tile">
+              <span class="stat-label">Correct</span>
+              <span class="stat-value"><b id="mqTotalRight">0</b>/<span id="mqTotalSeen">0</span></span>
+            </div>
+            <div class="stat-tile streak">
+              <span class="stat-label">Streak</span>
+              <span class="stat-value"><b id="mqStreak">0</b> 🎉</span>
+            </div>
+          </div>
+
+          <div class="mem-filters" id="mqFilters">
+            <button type="button" class="mem-chip active" data-filter="all">All ions</button>
+            <button type="button" class="mem-chip" data-filter="metals">Multivalent Metals</button>
+            <button type="button" class="mem-chip" data-filter="monatomic">Monatomic Ions</button>
+            <button type="button" class="mem-chip" data-filter="poly">Polyatomic Ions</button>
+          </div>
+
+          <div class="tile-stage">
+            <div class="ion-tile type-mq" id="mqTile">
+              <div class="ion-formula" id="mqFormula">—</div>
+              <div class="ion-sub" id="mqTag">Ion</div>
+            </div>
+          </div>
+
+          <div class="prompt">Type this ion's <b>name</b>. Multivalent metals ask for both the stock (e.g. "Iron (II)") and classical (e.g. "Ferrous") name; other ions just need the one name.<br><b> Do not use "/" in Sw/Exams</b></div>
+
+          <form id="mqForm" autocomplete="off">
+            <div class="row" data-field="name">
+              <label for="mq-name" id="mqNameLabel">Name</label>
+              <input id="mq-name" type="text" placeholder="__________">
+              <span class="mark"></span>
+            </div>
+            <div class="row" data-field="name2" id="mqNameRow2" style="display:none">
+              <label for="mq-name2" id="mqNameLabel2">Classical</label>
+              <input id="mq-name2" type="text" placeholder="__________">
+              <span class="mark"></span>
+            </div>
+
+            <div class="actions">
+              <button type="button" class="ghost" id="mqNextBtn">Next ion →</button>
+              <button type="submit" class="primary" id="mqCheckBtn">Check answer</button>
+            </div>
+          </form>
+
+          <div class="feedback" id="mqFeedback">
+            <div class="score-line">Score: <span class="n" id="mqRoundScore">0/1</span> <span id="mqRoundEmoji"></span></div>
+            <div class="note" id="mqFeedbackNote"></div>
+          </div>
+
+          <footer>Parentheses — "Tin (II)", "Tin(II)" &nbsp;·&nbsp; -ous = lower charge, -ic = higher charge</footer>
+
+        </div>
+      </div>
+
+      <div id="panelEgg" style="display:none">
+        <div class="quiz-card egg-card">
+          <div class="egg-header">
+            <span class="egg-emoji">🥚</span>
+            <div>
+              <div class="egg-title">You found the easter egg</div>
+              <div class="egg-sub">Ano kaya 'to?</div>
+            </div>
+          </div>
+          <div class="egg-video-wrap">
+            <video id="eggVideo" class="egg-video" src="whatifvideo.mp4" controls playsinline preload="metadata"></video>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <aside class="col-side">
+      <div class="side-card" id="categoryKeyCard">
+        <div class="side-card-title">Category key</div>
+        <div class="key-row metal"><i></i> Metal</div>
+        <div class="key-row nonmetal"><i></i> Nonmetal</div>
+        <div class="key-row metalloid"><i></i> Metalloid</div>
+      </div>
+      <div class="side-card" id="quickTipsCard">
+        <div class="side-card-title">Quick tips</div>
+        <ul class="tip-list">
+          <li><b>Classification</b> is where it sits on the table — Representative, Transition, or Inner Transition.</li>
+          <li><b>Kind</b> is what it's made of — metal, nonmetal, or metalloid.</li>
+          <li><b># of atoms</b> — add every subscript; a number right after a closing <b>)</b> multiplies everything inside it.</li>
+        </ul>
+      </div>
+      <div class="side-card" id="calcCard">
+        <div class="side-card-title">Calculator</div>
+        <div class="calculator" id="calcDesktop"></div>
+      </div>
+    </aside>
+  </div>
+
+  <section class="reference" id="familyListSection">
+    <div class="section-title">Family Name List</div>
+    <ul class="family-list">
+      <li>Alkali Metals</li>
+      <li>Alkaline Earth Metals</li>
+      <li>Transition Metals</li>
+      <li>Boron Family</li>
+      <li>Carbon Family</li>
+      <li>Nitrogen Family</li>
+      <li>Oxygen Family / Chalcogen Family</li>
+      <li>Halogens Family</li>
+      <li>Noble Gas</li>
+    </ul>
+  </section>
+
+  <section class="reference" id="periodicTableSection">
+    <div class="section-title">Periodic table — reference</div>
+    <div class="section-sub">Hover or tap a tile for its full facts. Scroll sideways on narrow screens.</div>
+    <div class="pt-scroll" id="ptScroll">
+      <div class="ptable" id="ptableMain"></div>
+      <div class="pt-fblock" id="ptableLan"><span class="pt-flabel">Lanthanides</span></div>
+      <div class="pt-fblock" id="ptableAct"><span class="pt-flabel">Actinides</span></div>
+    </div>
+    <div class="pt-legend">
+      <span><i class="sw-metal"></i> Metal</span>
+      <span><i class="sw-nonmetal"></i> Nonmetal</span>
+      <span><i class="sw-metalloid"></i> Metalloid</span>
+    </div>
+  </section>
+
+  <div class="site-footer">
+    <button type="button" class="link-btn" id="reopenChangelog">What's new</button>
+    <span>·</span>
+    <span>Nothing you type ever leaves your browser.</span>
+  </div>
+
+</div>
+
+<button type="button" class="calc-fab" id="calcFab" aria-label="Toggle calculator">🧮</button>
+<div class="calc-floating-wrap" id="calcFloatingWrap">
+  <div class="calc-floating-panel">
+    <div class="calc-floating-header">
+      <span>Calculator</span>
+      <button type="button" class="calc-close" id="calcCloseBtn" aria-label="Close calculator">✕</button>
+    </div>
+    <div class="calculator" id="calcMobile"></div>
+  </div>
+</div>
+
+
+
+<script src="app.js"></script>
+
+</body>
+</html>
