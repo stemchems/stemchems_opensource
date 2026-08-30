@@ -2206,7 +2206,6 @@ if(customBgInput){
         localStorage.setItem(THEME_KEY, "custom");
         localStorage.setItem(CUSTOM_BG_KEY, dataUrl);
       }catch(err){
-        // Image likely too large for localStorage — it'll still show for this session.
         alert("Your image is applied for this session, but it's too large to be saved for next time. Try a smaller image if you want it to stick around.");
       }
     };
