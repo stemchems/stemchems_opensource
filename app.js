@@ -134,6 +134,23 @@ function splitNameAlternatives(raw){
   return (raw||"").toString().split("/").map(s => s.trim()).filter(Boolean);
 }
 
+// Normalizes a typed chemical formula answer so it can be compared against
+// the stored formula (e.g. "Fe²⁺"). Converts unicode sub/superscript digits
+// and charge signs to plain ASCII, strips whitespace/carets, and puts a
+// trailing sign right after its digit so "Fe+2" and "Fe2+" both match "Fe²⁺".
+const FORMULA_CHAR_MAP = {
+  "₀":"0","₁":"1","₂":"2","₃":"3","₄":"4","₅":"5","₆":"6","₇":"7","₈":"8","₉":"9",
+  "⁰":"0","¹":"1","²":"2","³":"3","⁴":"4","⁵":"5","⁶":"6","⁷":"7","⁸":"8","⁹":"9",
+  "⁺":"+","⁻":"-",
+};
+function normFormula(s){
+  let x = (s||"").toString().trim().replace(/\s+/g,"").replace(/\^/g,"");
+  x = x.split("").map(ch => FORMULA_CHAR_MAP[ch] || ch).join("");
+  x = x.toLowerCase();
+  x = x.replace(/([+-])(\d+)$/, "$2$1");
+  return x;
+}
+
 function buildAcceptable(el){
   const [sym,name,z,period,groupNum,groupLetter,classification,kind,family,block] = el;
 
@@ -569,6 +586,9 @@ function formatCharge(n){
   return (n > 0 ? "+" : "") + n;
 }
 
+/* READ: ignore (prolly mostly for next semester [ready things up to not cram.])*/
+/* all ignore, bypass skip.*/
+
 const POLY_IONS = [
   ["NH₄⁺", 1, ["ammonium"]],
   ["NO₂⁻", -1, ["nitrite"]],
@@ -604,16 +624,16 @@ const POLY_IONS = [
   ["C₂O₄²⁻", -2, ["oxalate"]],
   ["S₂O₃²⁻", -2, ["thiosulfate"]],
   ["SCN⁻", -1, ["thiocyanate"]],
-  ["OCN⁻", -1, ["cyanate"]],
+  ["OCN⁻", -1, ["cyanate"]], /* ignore (prolly mostly for next semester [ready things up to not cram.])*/
   ["NH₂⁻", -1, ["amide"]],
   ["SiO₃²⁻", -2, ["silicate"]],
   ["AsO₄³⁻", -3, ["arsenate"]],
-  ["SeO₄²⁻", -2, ["selenate"]],
-  ["BO₃³⁻", -3, ["borate"]],
-  ["IO₄⁻", -1, ["periodate"]],
+  ["SeO₄²⁻", -2, ["selenate"]], /* ignore */
+  ["BO₃³⁻", -3, ["borate"]], /* ignore */
+  ["IO₄⁻", -1, ["periodate"]], /* ignore */
   ["BrO₂⁻", -1, ["bromite"]],
-  ["Hg₂²⁺", 2, ["mercury i", "mercurous", "mercury(i)"]],
-  ["Hg²⁺", 2, ["mercury ii", "mercuric", "mercury(ii)"]],
+  ["Hg₂²⁺", 2, ["mercury i", "mercurous", "mercury(i)"]], /* ignore */
+  ["Hg²⁺", 2, ["mercury ii", "mercuric", "mercury(ii)"]], /* ignore */
   ["Cu⁺", 1, ["copper i", "cuprous", "copper(i)"]],
   ["Cu²⁺", 2, ["copper ii", "cupric", "copper(ii)"]],
   ["Sn²⁺", 2, ["tin ii", "stannous", "tin(ii)"]],
@@ -1338,6 +1358,10 @@ let mqFilter = "all";
 let mqCurrent = null;
 let mqRecent = [];
 let mqTotalRight = 0, mqTotalSeen = 0, mqStreak = 0;
+let mqAskFormula = false;
+
+const MQ_NAME_PROMPT = 'Type this ion\'s <b>name</b>. Multivalent metals ask for both the stock (e.g. "Iron (II)") and classical (e.g. "Ferrous") name; other ions just need the one name.<br><b> Do not use "/" in Sw/Exams</b>';
+const MQ_FORMULA_PROMPT = 'Type this ion\'s <b>chemical formula</b>, including the charge (e.g. "Fe²⁺" or "SO₄²⁻"). You can type charges as plain numbers/signs, like "Fe2+".';
 
 function mqPool(){
   return MEM_QUIZ_SETS[mqFilter] || MEM_QUIZ_SETS.all;
@@ -1356,14 +1380,21 @@ function pickMq(){
 
 function loadNextMq(){
   mqCurrent = pickMq();
-  const [formula, , cat, accept] = mqCurrent;
-  document.getElementById("mqFormula").textContent = formula;
+  const [formula, name, cat, accept] = mqCurrent;
+  mqAskFormula = Math.random() < 0.5;
+
+  const tile = document.getElementById("mqFormula");
+  tile.textContent = mqAskFormula ? name : formula;
+  tile.classList.toggle("is-name", mqAskFormula);
   document.getElementById("mqTag").textContent = MEM_TAG_LABELS[cat] || "Ion";
 
-  // Multivalent metals have two accepted forms: [stock, classical].
-  // Anything with just one accepted name (monatomic/polyatomic) keeps the single textbox.
-  const twoBox = accept.length >= 2;
-  document.getElementById("mqNameLabel").textContent = twoBox ? "Stock" : "Name";
+  const promptEl = document.getElementById("mqPrompt");
+  if(promptEl) promptEl.innerHTML = mqAskFormula ? MQ_FORMULA_PROMPT : MQ_NAME_PROMPT;
+
+  // Multivalent metals have two accepted forms: [stock, classical] — but only
+  // when asking for the name. Asking for the formula is always one textbox.
+  const twoBox = !mqAskFormula && accept.length >= 2;
+  document.getElementById("mqNameLabel").textContent = mqAskFormula ? "Formula" : (twoBox ? "Stock" : "Name");
   document.getElementById("mqNameRow2").style.display = twoBox ? "" : "none";
 
   document.querySelectorAll("#mqForm .row").forEach(row => {
@@ -1371,6 +1402,7 @@ function loadNextMq(){
     const input = row.querySelector("input");
     input.value = "";
     input.disabled = false;
+    input.placeholder = (mqAskFormula && row.dataset.field === "name") ? "e.g. Fe²⁺" : "__________";
     const mark = row.querySelector(".mark");
     mark.classList.remove("show");
     mark.textContent = "";
@@ -1386,16 +1418,35 @@ function loadNextMq(){
 
 function checkMqAnswers(){
   const [formula, displayName, cat, accept] = mqCurrent;
-  const twoBox = accept.length >= 2;
+  const twoBox = !mqAskFormula && accept.length >= 2;
 
   const row = document.querySelector('#mqForm .row[data-field="name"]');
   const input = row.querySelector("input");
   const mark = row.querySelector(".mark");
-  const userVal = norm(input.value);
 
   let right = 0;
 
-  if(twoBox){
+  if(mqAskFormula){
+    const userVal = normFormula(input.value);
+    const ok = userVal.length > 0 && userVal === normFormula(formula);
+
+    input.disabled = true;
+    mark.classList.add("show");
+
+    if(ok){
+      right = 1;
+      mark.textContent = "✅";
+      row.classList.remove("wrong");
+    } else {
+      mark.textContent = "❌";
+      row.classList.add("wrong");
+      const corr = document.createElement("div");
+      corr.className = "correction";
+      corr.textContent = `→ ${formula}`;
+      row.appendChild(corr);
+    }
+  } else if(twoBox){
+    const userVal = norm(input.value);
     const row2 = document.getElementById("mqNameRow2");
     const input2 = row2.querySelector("input");
     const mark2 = row2.querySelector(".mark");
@@ -1429,6 +1480,7 @@ function checkMqAnswers(){
 
     right = (ok1 && ok2) ? 1 : 0;
   } else {
+    const userVal = norm(input.value);
     const ok = accept.map(norm).includes(userVal) && userVal.length > 0;
 
     input.disabled = true;
@@ -1464,7 +1516,9 @@ function checkMqAnswers(){
   const note = document.getElementById("mqFeedbackNote");
   document.getElementById("mqFeedback").classList.toggle("perfect", right === 1);
   if(right === 1){
-    note.innerHTML = twoBox ? `Galing! Both the stock and classical name check out.` : `Galing! Any of the accepted names (stock, classical, or common) count as correct.`;
+    note.innerHTML = mqAskFormula
+      ? `Galing! That's the correct formula.`
+      : (twoBox ? `Galing! Both the stock and classical name check out.` : `Galing! Any of the accepted names (stock, classical, or common) count as correct.`);
     burstConfetti();
   } else {
     note.innerHTML = `Oops Oops Oops! Yoohoo, Dito ang tingin! Sakadungpating patongting! Digidigidigidigidigidigidigi ihey! 1.. 2.. 3.. kanya kanya na! Ay? nakatulog! This is lans! ( engkkkk mali po..)`;
@@ -1501,6 +1555,10 @@ let rcTotalRight = 0, rcTotalSeen = 0;
 let rcTimeLeft = RC_DURATION;
 let rcTimerInterval = null;
 let rcAdvanceTimeout = null;
+let rcAskFormula = false;
+
+const RC_NAME_PROMPT = 'Type this ion\'s <b>name</b>. Multivalent metals ask for both the stock and classical name; other ions just need the one name.';
+const RC_FORMULA_PROMPT = 'Type this ion\'s <b>chemical formula</b>, including the charge (e.g. "Fe²⁺" or "SO₄²⁻"). You can type charges as plain numbers/signs, like "Fe2+".';
 
 function rcFormatTime(s){
   const m = Math.floor(s / 60);
@@ -1553,15 +1611,21 @@ function rcLoadNext(){
   }
 
   rcCurrent = rcQueue[rcIndex];
-  const [formula, , cat, accept] = rcCurrent;
+  const [formula, name, cat, accept] = rcCurrent;
+  rcAskFormula = Math.random() < 0.5;
 
-  document.getElementById("rcFormula").textContent = formula;
+  const tile = document.getElementById("rcFormula");
+  tile.textContent = rcAskFormula ? name : formula;
+  tile.classList.toggle("is-name", rcAskFormula);
   document.getElementById("rcTag").textContent = MEM_TAG_LABELS[cat] || "Ion";
   document.getElementById("rcIonNum").textContent = rcIndex + 1;
   document.getElementById("rcIonTotal").textContent = rcQueue.length;
 
-  const twoBox = accept.length >= 2;
-  document.getElementById("rcNameLabel").textContent = twoBox ? "Stock" : "Name";
+  const promptEl = document.getElementById("rcPrompt");
+  if(promptEl) promptEl.innerHTML = rcAskFormula ? RC_FORMULA_PROMPT : RC_NAME_PROMPT;
+
+  const twoBox = !rcAskFormula && accept.length >= 2;
+  document.getElementById("rcNameLabel").textContent = rcAskFormula ? "Formula" : (twoBox ? "Stock" : "Name");
   document.getElementById("rcNameRow2").style.display = twoBox ? "" : "none";
 
   document.querySelectorAll("#rcForm .row").forEach(row => {
@@ -1569,6 +1633,7 @@ function rcLoadNext(){
     const input = row.querySelector("input");
     input.value = "";
     input.disabled = false;
+    input.placeholder = (rcAskFormula && row.dataset.field === "name") ? "e.g. Fe²⁺" : "__________";
     const mark = row.querySelector(".mark");
     mark.classList.remove("show");
     mark.textContent = "";
@@ -1584,16 +1649,35 @@ function rcLoadNext(){
 function rcCheckAnswers(){
   if(!rcCurrent) return;
   const [formula, displayName, cat, accept] = rcCurrent;
-  const twoBox = accept.length >= 2;
+  const twoBox = !rcAskFormula && accept.length >= 2;
 
   const row = document.querySelector('#rcForm .row[data-field="name"]');
   const input = row.querySelector("input");
   const mark = row.querySelector(".mark");
-  const userVal = norm(input.value);
 
   let right = 0;
 
-  if(twoBox){
+  if(rcAskFormula){
+    const userVal = normFormula(input.value);
+    const ok = userVal.length > 0 && userVal === normFormula(formula);
+
+    input.disabled = true;
+    mark.classList.add("show");
+
+    if(ok){
+      right = 1;
+      mark.textContent = "✅";
+      row.classList.remove("wrong");
+    } else {
+      mark.textContent = "❌";
+      row.classList.add("wrong");
+      const corr = document.createElement("div");
+      corr.className = "correction";
+      corr.textContent = `→ ${formula}`;
+      row.appendChild(corr);
+    }
+  } else if(twoBox){
+    const userVal = norm(input.value);
     const row2 = document.getElementById("rcNameRow2");
     const input2 = row2.querySelector("input");
     const mark2 = row2.querySelector(".mark");
@@ -1627,6 +1711,7 @@ function rcCheckAnswers(){
 
     right = (ok1 && ok2) ? 1 : 0;
   } else {
+    const userVal = norm(input.value);
     const ok = accept.map(norm).includes(userVal) && userVal.length > 0;
 
     input.disabled = true;
@@ -1863,7 +1948,7 @@ function checkAnswers(){
   const note = document.getElementById("feedbackNote");
   document.getElementById("feedback").classList.toggle("perfect", right === 6);
   if(right === 6){
-    note.innerHTML = `Good job Pirate! <b>Classification</b> is where it sits on the table, <b>Kind</b> is what it's made of — you kept them straight the whole way.`;
+    note.innerHTML = `Good job Pirata! VIVA LARGA PIRATAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA`;
     burstConfetti();
   } else {
     const missedClass = document.querySelector('.row[data-field="classification"]').classList.contains("wrong");
@@ -2206,6 +2291,7 @@ if(customBgInput){
         localStorage.setItem(THEME_KEY, "custom");
         localStorage.setItem(CUSTOM_BG_KEY, dataUrl);
       }catch(err){
+        // Image likely too large for localStorage — it'll still show for this session.
         alert("Your image is applied for this session, but it's too large to be saved for next time. Try a smaller image if you want it to stick around.");
       }
     };
