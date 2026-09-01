@@ -256,8 +256,17 @@
     color: var(--ink-dim);
     text-align:center;
   }
+  .ion-formula.is-name{
+    font-family:'IBM Plex Sans', sans-serif;
+    font-weight:700;
+    font-size: 24px;
+    letter-spacing: normal;
+    line-height: 1.2;
+    max-width: 100%;
+  }
   @media (max-width: 480px){
     .ion-formula{ font-size: 30px; }
+    .ion-formula.is-name{ font-size: 19px; }
   }
 
   
