@@ -28,7 +28,7 @@
 -->
 
 <!--
-  To achieve Easter Egg Tab, add this script below line 258:
+  To achieve Easter Egg Tab, add this script below line 270:
 
       <button type="button" class="mode-tab mode-tab-egg" data-mode="egg" title="Easter egg" aria-label="Easter egg">🥚</button>
 
@@ -73,7 +73,7 @@
       <div class="creator-info">
         <div class="creator-name"><a href="https://www.instagram.com/torsoo.o/" target="_blank" rel="noopener">@torsoo.o</a></div>
         <div class="creator-role">Site Creator</div>
-        <div class="creator-bio">𝘚𝘰𝘮𝘯𝘪𝘢 𝘛𝘶𝘢 𝘗𝘦𝘳𝘴𝘦𝘲𝘶𝘦𝘳𝘦.</div>
+        <div class="creator-bio">𝖲𝖾𝗆𝗉𝖾𝗋 𝖾𝗍 𝗌𝖾𝗆𝗉𝖾𝗋, 𝗉𝗋𝗈 𝗉𝖺𝗍𝗋𝗂𝖺.</div>
         <div class="creator-status" id="creatorStatus">
           <span class="status-dot"></span>
           <span class="status-text" id="statusText">—</span>
@@ -91,6 +91,13 @@
     </div>
 
     <div class="changelog-scroll">
+
+    <div class="changelog-group">
+      <div class="changelog-date">September 1, 2026</div>
+        <ul class="changelog-list">
+          <li><b>Element names for Ions</b> — added for both recitation and practice to experience the hirap. (charot)</li>
+      </ul>
+    </div>
 
     <div class="changelog-group">
       <div class="changelog-date">August 29, 2026</div>
@@ -261,12 +268,13 @@
     <button type="button" class="mode-tab" data-mode="recitation">Recitation Practice</button>
     <button type="button" class="mode-tab" data-mode="memorize">Memorize Ions</button>
     <button type="button" class="mode-tab" data-mode="memquiz">Memorize Answer Quiz</button>
+    <!-- here 🥚-->
   </div>
 
   <div class="schedule-card" id="scheduleCard">
     <div class="schedule-head">
       <div class="schedule-head-text">
-        <span class="schedule-tag">📌 Announcement</span>
+        <span class="schedule-tag">📌 Announcement (Ms. Man*k*n Class)</span>
       </div>
       <button type="button" class="schedule-dismiss" id="scheduleDismiss" aria-label="Dismiss schedule">✕</button>
     </div>
@@ -886,7 +894,7 @@
               </div>
             </div>
 
-            <div class="prompt">Type this ion's <b>name</b>. Multivalent metals ask for both the stock and classical name; other ions just need the one name.</div>
+            <div class="prompt" id="rcPrompt">Type this ion's <b>name</b>. Multivalent metals ask for both the stock and classical name; other ions just need the one name.</div>
 
             <form id="rcForm" autocomplete="off">
               <div class="row" data-field="name">
@@ -1097,7 +1105,7 @@
             </div>
           </div>
 
-          <div class="prompt">Type this ion's <b>name</b>. Multivalent metals ask for both the stock (e.g. "Iron (II)") and classical (e.g. "Ferrous") name; other ions just need the one name.<br><b> Do not use "/" in Sw/Exams</b></div>
+          <div class="prompt" id="mqPrompt">Type this ion's <b>name</b>. Multivalent metals ask for both the stock (e.g. "Iron (II)") and classical (e.g. "Ferrous") name; other ions just need the one name.<br><b> Do not use "/" in Sw/Exams</b></div>
 
           <form id="mqForm" autocomplete="off">
             <div class="row" data-field="name">
